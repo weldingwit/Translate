@@ -38,18 +38,23 @@ class ViewController: UIViewController {
         
         let request = URLRequest(url: url!)// Creating Http Request
         
+        let session = URLSession(configuration: URLSessionConfiguration.default)
+        
         //var data = NSMutableData()var data = NSMutableData()
         
-        let indicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
-        indicator.center = view.center
-        view.addSubview(indicator)
-        indicator.startAnimating()
+       //let indicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+      //indicator.center = view.center
+      //view.addSubview(indicator)
+     // indicator.startAnimating()
+        
+        LoadingIndicatorView.show("Translating...")
         
         var result = "<Translation Error>"
         
-        NSURLConnection.sendAsynchronousRequest(request, queue: OperationQueue.main) { response, data, error in
-            
-            indicator.stopAnimating()
+            let task = session.dataTask(with: request){
+            (data, response, error) in
+          
+
             
             if let httpResponse = response as? HTTPURLResponse {
                 if(httpResponse.statusCode == 200){
@@ -63,10 +68,18 @@ class ViewController: UIViewController {
                     }
                 }
                 
+                let block = DispatchWorkItem{
+
                 self.translatedText.text = result
+                    LoadingIndicatorView.hide()
+               }
+               DispatchQueue.main.async(execute: block)
             }
+               
         }
-        
+        task.resume()
     }
+    
 }
+
 
