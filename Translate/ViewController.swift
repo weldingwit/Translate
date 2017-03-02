@@ -8,17 +8,37 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDataSource {
     
+    @IBOutlet weak var picklang: UILabel!
+    @IBOutlet weak var pickerview: UIPickerView!
     @IBOutlet weak var textToTranslate: UITextView!
     @IBOutlet weak var translatedText: UITextView!
+    
+    var language = ["French", "Spanish", "Itilian","Irish"]
     
     //var data = NSMutableData()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        pickerview.delegate = self
+        pickerview.dataSource = self
     }
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return language.count
+    }
+    
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return language [row]
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        picklang.text = language[row]
+    }
+    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -30,7 +50,19 @@ class ViewController: UIViewController {
         let str = textToTranslate.text
         let escapedStr = str?.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)
         
-        let langStr = ("en|fr").addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)
+        var langStr = ("en|fr").addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)
+        
+        if(picklang.text == "Spanish"){
+            langStr = ("en|es").addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)
+        }
+        
+        if(picklang.text == "Itilian"){
+            langStr = ("en|it").addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)
+        }
+        
+        if(picklang.text == "Irish"){
+            langStr = ("en|ga").addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)
+        }
         
         let urlStr:String = ("https://api.mymemory.translated.net/get?q="+escapedStr!+"&langpair="+langStr!)
         
@@ -40,12 +72,6 @@ class ViewController: UIViewController {
         
         let session = URLSession(configuration: URLSessionConfiguration.default)
         
-        //var data = NSMutableData()var data = NSMutableData()
-        
-       //let indicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
-      //indicator.center = view.center
-      //view.addSubview(indicator)
-     // indicator.startAnimating()
         
         LoadingIndicatorView.show("Translating...")
         
