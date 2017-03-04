@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDataSource {
+class ViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDataSource, UITextViewDelegate {
     
     @IBOutlet weak var picklang: UILabel!
     @IBOutlet weak var pickerview: UIPickerView!
@@ -23,7 +23,59 @@ class ViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDataSour
         super.viewDidLoad()
         pickerview.delegate = self
         pickerview.dataSource = self
+        textToTranslate.text = "Text To Translate"
+        textToTranslate.textColor = UIColor.lightGray
+        translatedText.text = "Translated Text"
+        translatedText.textColor = UIColor.lightGray
+        textToTranslate.delegate = self
+        translatedText.delegate = self
+        
+        //init toolbar
+        let toolbar:UIToolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 30))
+        
+        //create left side empty space so that done button set on right side
+        let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        
+        let doneBtn: UIBarButtonItem = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(ViewController.doneButtonAction))
+        
+        //array of BarButtonItems
+        var arr = [UIBarButtonItem]()
+        arr.append(flexSpace)
+        arr.append(doneBtn)
+        
+        toolbar.setItems(arr, animated: false)
+        toolbar.sizeToFit()
+        
+        //setting toolbar as inputAccessoryView
+        self.textToTranslate.inputAccessoryView = toolbar
+        
     }
+    
+    func doneButtonAction(){
+        self.view.endEditing(true)
+    
+    }
+    
+    func textViewDidBeginEditing(_ textToTranslate: UITextView) {
+        if textToTranslate.textColor == UIColor.lightGray {
+            textToTranslate.text = nil
+            textToTranslate.textColor = UIColor.black
+            translatedText.textColor = UIColor.black
+        }
+    }
+    
+    
+     func textViewDidEndEditing(_ textToTranslate: UITextView) {
+        if textToTranslate.text.isEmpty {
+           textToTranslate.text = "Text To Translate"
+            textToTranslate.textColor = UIColor.lightGray
+            translatedText.text = "Translated Text"
+            translatedText.textColor = UIColor.lightGray
+        }
+    }
+
+    
+    
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         return language.count
     }
@@ -44,6 +96,7 @@ class ViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDataSour
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
     
     @IBAction func translate(_ sender: AnyObject) {
         
