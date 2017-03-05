@@ -80,19 +80,28 @@
                                     <action selector="translate:" destination="BYZ-38-t0r" eventType="touchDown" id="gBi-DU-U1G"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Enu-T3-lJd">
+                                <rect key="frame" x="133" y="607" width="110" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Start Recording"/>
+                                <connections>
+                                    <action selector="recordButtonTapped" destination="BYZ-38-t0r" eventType="touchUpInside" id="qlq-tf-1Lq"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
                     <connections>
                         <outlet property="pickerview" destination="QKE-QU-jue" id="Ktz-gl-jQv"/>
                         <outlet property="picklang" destination="oac-WU-cuZ" id="S9e-co-UUj"/>
+                        <outlet property="recordButton" destination="Enu-T3-lJd" id="eaP-LV-gfR"/>
                         <outlet property="textToTranslate" destination="dii-Vg-90N" id="NdU-oM-QUp"/>
                         <outlet property="translatedText" destination="LaV-KV-DTJ" id="fPe-io-8Ij"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="495" y="359"/>
+            <point key="canvasLocation" x="342" y="175"/>
         </scene>
     </scenes>
 </document>
