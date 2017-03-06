@@ -8,9 +8,11 @@
 
 import UIKit
 import Speech
+import AVFoundation
 
 class ViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDataSource, UITextViewDelegate, SFSpeechRecognizerDelegate {
     
+    @IBOutlet weak var voice: UILabel!
     @IBOutlet weak var picklang: UILabel!
     @IBOutlet weak var pickerview: UIPickerView!
     @IBOutlet weak var textToTranslate: UITextView!
@@ -24,6 +26,7 @@ class ViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDataSour
     
     private let audioEngine = AVAudioEngine()
     
+
     
     @IBOutlet var recordButton : UIButton!
     
@@ -43,8 +46,9 @@ class ViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDataSour
         translatedText.textColor = UIColor.lightGray
         textToTranslate.delegate = self
         translatedText.delegate = self
+
         
-        //init toolbar
+        //init toolbar for creating the button to dismiss the keyboard
         let toolbar:UIToolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 30))
         
         //create left side empty space so that done button set on right side
@@ -64,9 +68,16 @@ class ViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDataSour
         self.textToTranslate.inputAccessoryView = toolbar
         
     }
+    
+    func doneButtonAction(){
+        self.view.endEditing(true)
+        
+    }
+    
     override public func viewDidAppear(_ animated: Bool) {
         speechRecognizer.delegate = self
         
+        //Request authorization from user to use the speech recognition
         SFSpeechRecognizer.requestAuthorization { authStatus in
             /*
              The callback may not be called on the main thread. Add an
@@ -92,6 +103,39 @@ class ViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDataSour
             }
         }
     }
+    
+   //Reads the text in the textview and uses speach by picking what lanuage is being used
+    @IBAction func textToSpeach(_ sender: Any) {
+        var lang = "fr-FR"
+        let synth = AVSpeechSynthesizer()
+        let utterance = AVSpeechUtterance(string: translatedText.text)
+        utterance.rate = AVSpeechUtteranceDefaultSpeechRate
+            
+        if (picklang.text == "Spanish"){
+            lang = "es-SP"
+            utterance.voice = AVSpeechSynthesisVoice(language: lang)
+            synth.speak(utterance)
+            
+        }else{
+        
+            if (picklang.text == "Itilian"){
+            lang = "it-IT"
+            utterance.voice = AVSpeechSynthesisVoice(language: lang)
+            synth.speak(utterance)
+
+        }else{
+            
+            if (picklang.text == "French")||picklang.text == "Choose Lanuage!"{
+                lang = "fr-FR"
+                utterance.voice = AVSpeechSynthesisVoice(language: lang)
+                synth.speak(utterance)
+            }
+
+    }
+}
+    }
+        
+    //Speach to text
     private func startRecording() throws {
         
         // Cancel the previous task if it's running.
@@ -101,7 +145,7 @@ class ViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDataSour
         }
         
         let audioSession = AVAudioSession.sharedInstance()
-        try audioSession.setCategory(AVAudioSessionCategoryRecord)
+        try audioSession.setCategory(AVAudioSessionCategoryPlayAndRecord, with:AVAudioSessionCategoryOptions.defaultToSpeaker)
         try audioSession.setMode(AVAudioSessionModeMeasurement)
         try audioSession.setActive(true, with: .notifyOthersOnDeactivation)
         
@@ -121,17 +165,18 @@ class ViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDataSour
             if let result = result {
                 self.textToTranslate.text = result.bestTranscription.formattedString
                 isFinal = result.isFinal
+                self.textToTranslate.textColor = UIColor.black
+                self.translatedText.textColor = UIColor.black
             }
             
             if error != nil || isFinal {
                 self.audioEngine.stop()
                 inputNode.removeTap(onBus: 0)
-                
                 self.recognitionRequest = nil
                 self.recognitionTask = nil
                 
                 self.recordButton.isEnabled = true
-                self.recordButton.setTitle("Start Recording", for: [])
+             //   self.recordButton.setTitle("Start Recording", for: [])
             }
         }
         
@@ -144,7 +189,8 @@ class ViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDataSour
         
         try audioEngine.start()
         
-        textToTranslate.text = "(Go ahead, I'm listening)"
+        voice.text = "Go ahead, I'm listening"
+        
     }
     
     // MARK: SFSpeechRecognizerDelegate
@@ -152,32 +198,36 @@ class ViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDataSour
     public func speechRecognizer(_ speechRecognizer: SFSpeechRecognizer, availabilityDidChange available: Bool) {
         if available {
             recordButton.isEnabled = true
-            recordButton.setTitle("Start Recording", for: [])
+ 
+            
         } else {
             recordButton.isEnabled = false
             recordButton.setTitle("Recognition not available", for: .disabled)
         }
     }
     
-    // MARK: Interface Builder actions
-    
-    @IBAction func recordButtonTapped() {
+
+
+//The button function for the speach to text, changes the icon from siri to cancel when button is pressed
+    @IBAction func recordButtonTapped(_ sender: UIButton) {
+        //  Sound.play(file: "siri.mp3")
         if audioEngine.isRunning {
             audioEngine.stop()
             recognitionRequest?.endAudio()
             recordButton.isEnabled = false
-            recordButton.setTitle("Stopping", for: .disabled)
+            recordButton.setTitle("", for: .disabled)
+            recordButton.setBackgroundImage(UIImage(named: "siri.png"), for: UIControlState.normal)
+            voice.text = ""
+            
         } else {
             try! startRecording()
-            recordButton.setTitle("Stop recording", for: [])
+            
+            recordButton.setBackgroundImage(UIImage(named: "cancel.png"), for: UIControlState.normal)
         }
-    }
-
-    func doneButtonAction(){
-        self.view.endEditing(true)
-    
+        
     }
     
+    //setting up a prompt text placeholder for the text view that deletes when prssed
     func textViewDidBeginEditing(_ textToTranslate: UITextView) {
         if textToTranslate.textColor == UIColor.lightGray {
             textToTranslate.text = nil
@@ -244,7 +294,7 @@ class ViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDataSour
         let session = URLSession(configuration: URLSessionConfiguration.default)
         
         
-        LoadingIndicatorView.show("Translating...")
+        LoadingIndicatorView.show("Translating...")//  Created by Vince Chan on 12/2/15.
         
         var result = "<Translation Error>"
         
