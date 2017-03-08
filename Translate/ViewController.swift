@@ -10,6 +10,7 @@ import UIKit
 import Speech
 import AVFoundation
 
+
 class ViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDataSource, UITextViewDelegate, SFSpeechRecognizerDelegate {
     
     @IBOutlet weak var voice: UILabel!
@@ -18,7 +19,7 @@ class ViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDataSour
     @IBOutlet weak var textToTranslate: UITextView!
     @IBOutlet weak var translatedText: UITextView!
     
-    private let speechRecognizer = SFSpeechRecognizer(locale: Locale(identifier: "en-US"))!
+    private let speechRecognizer = SFSpeechRecognizer(locale: Locale(identifier: "en-GB"))!
     
     private var recognitionRequest: SFSpeechAudioBufferRecognitionRequest?
     
@@ -32,7 +33,7 @@ class ViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDataSour
     
 
     
-    var language = ["French", "Spanish", "Itilian"]
+    var language = ["French", "Spanish", "Itilian", "German"]
     
     //var data = NSMutableData()
     
@@ -74,6 +75,45 @@ class ViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDataSour
         
     }
     
+    
+   //Reads the text in the textview and uses speach by picking what lanuage is being used
+    @IBAction func textToSpeach(_ sender: Any) {
+        var lang = "fr-FR"
+        let synth = AVSpeechSynthesizer()
+        let utterance = AVSpeechUtterance(string: translatedText.text)
+        utterance.rate = AVSpeechUtteranceDefaultSpeechRate
+            
+        if (picklang.text == "Spanish"){
+            lang = "es-SP"
+            utterance.voice = AVSpeechSynthesisVoice(language: lang)
+            synth.speak(utterance)
+            
+        }else{
+        
+            if (picklang.text == "Itilian"){
+            lang = "it-IT"
+            utterance.voice = AVSpeechSynthesisVoice(language: lang)
+            synth.speak(utterance)
+
+        }else{
+            
+            if (picklang.text == "French")||picklang.text == "Choose Lanuage!"{
+                lang = "fr-FR"
+                utterance.voice = AVSpeechSynthesisVoice(language: lang)
+                synth.speak(utterance)
+        }else{
+                
+            if (picklang.text == "German"){
+                lang = "de-DE"
+                utterance.voice = AVSpeechSynthesisVoice(language: lang)
+                synth.speak(utterance)
+                
+                }
+             }
+           }
+        }
+     }
+    
     override public func viewDidAppear(_ animated: Bool) {
         speechRecognizer.delegate = self
         
@@ -103,39 +143,7 @@ class ViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDataSour
             }
         }
     }
-    
-   //Reads the text in the textview and uses speach by picking what lanuage is being used
-    @IBAction func textToSpeach(_ sender: Any) {
-        var lang = "fr-FR"
-        let synth = AVSpeechSynthesizer()
-        let utterance = AVSpeechUtterance(string: translatedText.text)
-        utterance.rate = AVSpeechUtteranceDefaultSpeechRate
-            
-        if (picklang.text == "Spanish"){
-            lang = "es-SP"
-            utterance.voice = AVSpeechSynthesisVoice(language: lang)
-            synth.speak(utterance)
-            
-        }else{
-        
-            if (picklang.text == "Itilian"){
-            lang = "it-IT"
-            utterance.voice = AVSpeechSynthesisVoice(language: lang)
-            synth.speak(utterance)
-
-        }else{
-            
-            if (picklang.text == "French")||picklang.text == "Choose Lanuage!"{
-                lang = "fr-FR"
-                utterance.voice = AVSpeechSynthesisVoice(language: lang)
-                synth.speak(utterance)
-            }
-
-    }
-}
-    }
-        
-    //Speach to text
+    //Speech to text
     private func startRecording() throws {
         
         // Cancel the previous task if it's running.
@@ -144,11 +152,12 @@ class ViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDataSour
             self.recognitionTask = nil
         }
         
-        let audioSession = AVAudioSession.sharedInstance()
-        try audioSession.setCategory(AVAudioSessionCategoryPlayAndRecord, with:AVAudioSessionCategoryOptions.defaultToSpeaker)
-        try audioSession.setMode(AVAudioSessionModeMeasurement)
+        let audioSession:AVAudioSession = AVAudioSession.sharedInstance()
+        try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayAndRecord)
+        try AVAudioSession.sharedInstance().setActive(true)
+        try audioSession.setCategory(AVAudioSessionCategoryPlayAndRecord, with:.defaultToSpeaker)
+        try AVAudioSession.sharedInstance().overrideOutputAudioPort(AVAudioSessionPortOverride.speaker);
         try audioSession.setActive(true, with: .notifyOthersOnDeactivation)
-        
         recognitionRequest = SFSpeechAudioBufferRecognitionRequest()
         
         guard let inputNode = audioEngine.inputNode else { fatalError("Audio engine has no input node") }
@@ -176,7 +185,7 @@ class ViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDataSour
                 self.recognitionTask = nil
                 
                 self.recordButton.isEnabled = true
-             //   self.recordButton.setTitle("Start Recording", for: [])
+
             }
         }
         
@@ -203,6 +212,7 @@ class ViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDataSour
         } else {
             recordButton.isEnabled = false
             recordButton.setTitle("Recognition not available", for: .disabled)
+            
         }
     }
     
@@ -210,7 +220,7 @@ class ViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDataSour
 
 //The button function for the speach to text, changes the icon from siri to cancel when button is pressed
     @IBAction func recordButtonTapped(_ sender: UIButton) {
-        //  Sound.play(file: "siri.mp3")
+        Sound.play(file: "siri.mp3")
         if audioEngine.isRunning {
             audioEngine.stop()
             recognitionRequest?.endAudio()
@@ -285,6 +295,9 @@ class ViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDataSour
             langStr = ("en|it").addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)
         }
         
+        if(picklang.text == "German"){
+            langStr = ("en|de").addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)
+        }
         let urlStr:String = ("https://api.mymemory.translated.net/get?q="+escapedStr!+"&langpair="+langStr!)
         
         let url = URL(string: urlStr)
@@ -319,6 +332,7 @@ class ViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDataSour
 
                 self.translatedText.text = result
                     LoadingIndicatorView.hide()
+                    
                }
                DispatchQueue.main.async(execute: block)
             }
