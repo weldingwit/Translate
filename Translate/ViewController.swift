@@ -78,7 +78,7 @@ class ViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDataSour
     
    //Reads the text in the textview and uses speach by picking what lanuage is being used
     @IBAction func textToSpeach(_ sender: Any) {
-        var lang = "fr-FR"
+        var lang = ""
         let synth = AVSpeechSynthesizer()
         let utterance = AVSpeechUtterance(string: translatedText.text)
         utterance.rate = AVSpeechUtteranceDefaultSpeechRate
@@ -153,9 +153,9 @@ class ViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDataSour
         }
         
         let audioSession:AVAudioSession = AVAudioSession.sharedInstance()
-        try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayAndRecord)
-        try AVAudioSession.sharedInstance().setActive(true)
-        try audioSession.setCategory(AVAudioSessionCategoryPlayAndRecord, with:.defaultToSpeaker)
+        //    try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayAndRecord)
+        //    try AVAudioSession.sharedInstance().setActive(true)
+        try! AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayAndRecord, with:.defaultToSpeaker)
         try AVAudioSession.sharedInstance().overrideOutputAudioPort(AVAudioSessionPortOverride.speaker);
         try audioSession.setActive(true, with: .notifyOthersOnDeactivation)
         recognitionRequest = SFSpeechAudioBufferRecognitionRequest()
