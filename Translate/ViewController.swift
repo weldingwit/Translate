@@ -4,7 +4,10 @@
 //
 //  Created by Robert O'Connor on 16/10/2015.
 //  Copyright © 2015 WIT. All rights reserved.
-//
+//  Code Refrences: https://github.com/jhuerkamp/SpeechRecognizerDemo/tree/master/Note%20%26%20Remind
+//  https://github.com/adamcichy/SwiftySound
+//  https://www.captechconsulting.com/blogs/ios-10-blog-series-speech-recognition
+
 
 import UIKit
 import Speech
@@ -30,11 +33,6 @@ class ViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDataSour
     private let audioEngine = AVAudioEngine()
     
 
-    
-
-    
-    
-    
     var language = ["French", "Spanish", "Italian", "German"]
     
     //var data = NSMutableData()
@@ -78,7 +76,7 @@ class ViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDataSour
     }
     
     
-   //Reads the text in the textview and uses speach by picking what lanuage is being used
+   //Reads the text in the textview and uses speech by picking what lanuage is being used
     @IBAction func textToSpeach(_ sender: Any) {
         var lang = ""
         let synth = AVSpeechSynthesizer()
@@ -119,7 +117,7 @@ class ViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDataSour
     
     override public func viewDidAppear(_ animated: Bool) {
         speechRecognizer.delegate = self
-        
+
         //Request authorization from user to use the speech recognition
         SFSpeechRecognizer.requestAuthorization { authStatus in
             /*
@@ -146,6 +144,7 @@ class ViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDataSour
             }
         }
     }
+    
     //Speech to text
     private func startRecording() throws {
         
@@ -219,7 +218,7 @@ class ViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDataSour
     
 
 
-//The button function for the speach to text, changes the icon from siri to cancel when button is pressed
+//The button function for the speech to text, changes the icon from siri to cancel when button is pressed
     @IBAction func recordButtonTapped(_ sender: UIButton) {
         Sound.play(file: "siri.mp3")
         if audioEngine.isRunning {
@@ -238,7 +237,7 @@ class ViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDataSour
         
     }
     
-    //setting up a prompt text placeholder for the text view that deletes when prssed
+    //setting up a prompt text placeholder for the text view that deletes when pressed
     func textViewDidBeginEditing(_ textToTranslate: UITextView) {
         if textToTranslate.textColor == UIColor.lightGray {
             textToTranslate.text = nil
@@ -292,7 +291,7 @@ class ViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDataSour
         // Dispose of any resources that can be recreated.
     }
     
-    
+    //Translate button
     @IBAction func translate(_ sender: AnyObject) {
         
         let str = textToTranslate.text
@@ -300,6 +299,7 @@ class ViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDataSour
         
         var langStr = ("en|fr").addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)
         
+        //If the lanuage label has any of the lanuges present make the call to translate that lanuage
         if(picklang.text == "Spanish"){
             langStr = ("en|es").addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)
         }
@@ -320,7 +320,7 @@ class ViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDataSour
         let session = URLSession(configuration: URLSessionConfiguration.default)
         
         
-        LoadingIndicatorView.show("Translating...")//  Created by Vince Chan on 12/2/15.
+        LoadingIndicatorView.show("Translating...")// Loading indicator Created by Vince Chan on 12/2/15.
         
         var result = "<Translation Error>"
         
