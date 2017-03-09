@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		82A9D30A1E6F7BEC00E69372 /* siri.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 82A9D3091E6F7BEC00E69372 /* siri.mp3 */; };
 		82A9D30C1E6F7BF500E69372 /* Sound.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82A9D30B1E6F7BF500E69372 /* Sound.swift */; };
-		82D3A9191E71A1D900056547 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 82D3A9181E71A1D900056547 /* LaunchScreen.storyboard */; };
 		82D3A91F1E71A71300056547 /* cancel.png in Resources */ = {isa = PBXBuildFile; fileRef = 82D3A91A1E71A71300056547 /* cancel.png */; };
 		82D3A9201E71A71300056547 /* flag.png in Resources */ = {isa = PBXBuildFile; fileRef = 82D3A91B1E71A71300056547 /* flag.png */; };
 		82D3A9211E71A71300056547 /* listen.png in Resources */ = {isa = PBXBuildFile; fileRef = 82D3A91C1E71A71300056547 /* listen.png */; };
@@ -19,6 +18,7 @@
 		82D3A9341E71E1FE00056547 /* Italy.png in Resources */ = {isa = PBXBuildFile; fileRef = 82D3A9301E71E1FE00056547 /* Italy.png */; };
 		82D3A9351E71E1FE00056547 /* Spain.png in Resources */ = {isa = PBXBuildFile; fileRef = 82D3A9311E71E1FE00056547 /* Spain.png */; };
 		82D3A9371E7203FE00056547 /* backround.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 82D3A9361E7203FE00056547 /* backround.jpg */; };
+		82D3A93D1E7216E300056547 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 82D3A93B1E7216E300056547 /* LaunchScreen.storyboard */; };
 		82FB5A671E686E440015A2C5 /* LoadingIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82FB5A661E686E440015A2C5 /* LoadingIndicatorView.swift */; };
 		FFD2F9B71BD1101A00F54057 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFD2F9B61BD1101A00F54057 /* AppDelegate.swift */; };
 		FFD2F9B91BD1101A00F54057 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFD2F9B81BD1101A00F54057 /* ViewController.swift */; };
@@ -29,7 +29,6 @@
 /* Begin PBXFileReference section */
 		82A9D3091E6F7BEC00E69372 /* siri.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = siri.mp3; path = Translate/siri.mp3; sourceTree = "<group>"; };
 		82A9D30B1E6F7BF500E69372 /* Sound.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sound.swift; sourceTree = "<group>"; };
-		82D3A9181E71A1D900056547 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = ../../../.Trash/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		82D3A91A1E71A71300056547 /* cancel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = cancel.png; path = Translate/images/cancel.png; sourceTree = "<group>"; };
 		82D3A91B1E71A71300056547 /* flag.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = flag.png; path = Translate/images/flag.png; sourceTree = "<group>"; };
 		82D3A91C1E71A71300056547 /* listen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = listen.png; path = Translate/images/listen.png; sourceTree = "<group>"; };
@@ -39,6 +38,7 @@
 		82D3A9301E71E1FE00056547 /* Italy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Italy.png; path = Translate/images/Italy.png; sourceTree = "<group>"; };
 		82D3A9311E71E1FE00056547 /* Spain.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Spain.png; path = Translate/images/Spain.png; sourceTree = "<group>"; };
 		82D3A9361E7203FE00056547 /* backround.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = backround.jpg; path = Translate/images/backround.jpg; sourceTree = "<group>"; };
+		82D3A93C1E7216E300056547 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		82FB5A661E686E440015A2C5 /* LoadingIndicatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingIndicatorView.swift; sourceTree = "<group>"; };
 		FFD2F9B31BD1101A00F54057 /* Translate.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Translate.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FFD2F9B61BD1101A00F54057 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -88,6 +88,7 @@
 		FFD2F9B51BD1101A00F54057 /* Translate */ = {
 			isa = PBXGroup;
 			children = (
+				82D3A93B1E7216E300056547 /* LaunchScreen.storyboard */,
 				82A9D30B1E6F7BF500E69372 /* Sound.swift */,
 				FFD2F9B61BD1101A00F54057 /* AppDelegate.swift */,
 				82FB5A661E686E440015A2C5 /* LoadingIndicatorView.swift */,
@@ -95,7 +96,6 @@
 				FFD2F9BA1BD1101A00F54057 /* Main.storyboard */,
 				FFD2F9BD1BD1101A00F54057 /* Assets.xcassets */,
 				FFD2F9C21BD1101A00F54057 /* Info.plist */,
-				82D3A9181E71A1D900056547 /* LaunchScreen.storyboard */,
 			);
 			path = Translate;
 			sourceTree = "<group>";
@@ -160,13 +160,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				82D3A9351E71E1FE00056547 /* Spain.png in Resources */,
-				82D3A9191E71A1D900056547 /* LaunchScreen.storyboard in Resources */,
 				FFD2F9BE1BD1101A00F54057 /* Assets.xcassets in Resources */,
 				82D3A9341E71E1FE00056547 /* Italy.png in Resources */,
 				82D3A9221E71A71300056547 /* siri.png in Resources */,
 				82D3A9371E7203FE00056547 /* backround.jpg in Resources */,
 				82D3A9321E71E1FE00056547 /* France.png in Resources */,
 				82D3A9211E71A71300056547 /* listen.png in Resources */,
+				82D3A93D1E7216E300056547 /* LaunchScreen.storyboard in Resources */,
 				82A9D30A1E6F7BEC00E69372 /* siri.mp3 in Resources */,
 				82D3A91F1E71A71300056547 /* cancel.png in Resources */,
 				82D3A9331E71E1FE00056547 /* Germany.png in Resources */,
@@ -192,6 +192,14 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		82D3A93B1E7216E300056547 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				82D3A93C1E7216E300056547 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
 		FFD2F9BA1BD1101A00F54057 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
