@@ -18,6 +18,8 @@ class ViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDataSour
     @IBOutlet weak var pickerview: UIPickerView!
     @IBOutlet weak var textToTranslate: UITextView!
     @IBOutlet weak var translatedText: UITextView!
+    @IBOutlet var recordButton : UIButton!
+    @IBOutlet var TranslateButton : UIButton!
     
     private let speechRecognizer = SFSpeechRecognizer(locale: Locale(identifier: "en-GB"))!
     
@@ -29,11 +31,11 @@ class ViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDataSour
     
 
     
-    @IBOutlet var recordButton : UIButton!
-    
 
     
-    var language = ["French", "Spanish", "Itilian", "German"]
+    
+    
+    var language = ["French", "Spanish", "Italian", "German"]
     
     //var data = NSMutableData()
     
@@ -47,7 +49,7 @@ class ViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDataSour
         translatedText.textColor = UIColor.lightGray
         textToTranslate.delegate = self
         translatedText.delegate = self
-
+        
         
         //init toolbar for creating the button to dismiss the keyboard
         let toolbar:UIToolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 30))
@@ -84,13 +86,14 @@ class ViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDataSour
         utterance.rate = AVSpeechUtteranceDefaultSpeechRate
             
         if (picklang.text == "Spanish"){
+            
             lang = "es-SP"
             utterance.voice = AVSpeechSynthesisVoice(language: lang)
             synth.speak(utterance)
             
         }else{
         
-            if (picklang.text == "Itilian"){
+            if (picklang.text == "Italian"){
             lang = "it-IT"
             utterance.voice = AVSpeechSynthesisVoice(language: lang)
             synth.speak(utterance)
@@ -153,8 +156,6 @@ class ViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDataSour
         }
         
         let audioSession:AVAudioSession = AVAudioSession.sharedInstance()
-        //    try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayAndRecord)
-        //    try AVAudioSession.sharedInstance().setActive(true)
         try! AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayAndRecord, with:.defaultToSpeaker)
         try AVAudioSession.sharedInstance().overrideOutputAudioPort(AVAudioSessionPortOverride.speaker);
         try audioSession.setActive(true, with: .notifyOthersOnDeactivation)
@@ -268,11 +269,23 @@ class ViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDataSour
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         return language [row]
     }
-    
+    //Change the label and the flag from waht is selected in the pickerview
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         picklang.text = language[row]
+        if(picklang.text == "Spanish"){
+            TranslateButton.setBackgroundImage(UIImage(named: "Spain.png"), for: UIControlState.normal)
     }
-    
+        if(picklang.text == "French"){
+            TranslateButton.setBackgroundImage(UIImage(named: "France.png"), for: UIControlState.normal)
+    }
+        if(picklang.text == "German"){
+            TranslateButton.setBackgroundImage(UIImage(named: "Germany.png"), for: UIControlState.normal)
+    }
+        if(picklang.text == "Italian"){
+            TranslateButton.setBackgroundImage(UIImage(named: "Italy.png"), for: UIControlState.normal)
+    }
+
+    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -291,7 +304,7 @@ class ViewController: UIViewController,UIPickerViewDelegate,UIPickerViewDataSour
             langStr = ("en|es").addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)
         }
         
-        if(picklang.text == "Itilian"){
+        if(picklang.text == "Italian"){
             langStr = ("en|it").addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)
         }
         
